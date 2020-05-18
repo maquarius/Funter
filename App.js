@@ -16,6 +16,7 @@ import HistoryEventMapScreen from "./components/HistoryEventMapScreen";
 import PlayingHistoryScreen from "./components/PlayingHistoryScreen";
 import SoloScreen from "./components/SoloScreen";
 import PictureScreen from "./components/PictureScreen";
+import LogInScreen from "./components/logInScreen";
 
 const AppNavigator = createStackNavigator({
   Home: { screen: HomeScreen },
@@ -24,6 +25,7 @@ const AppNavigator = createStackNavigator({
   PlayingHistory: { screen: PlayingHistoryScreen },
   Solo: { screen: SoloScreen },
   Picture: { screen: PictureScreen },
+  LogIn: { screen: LogInScreen },
 });
 
 const AppContainer = createAppContainer(AppNavigator);

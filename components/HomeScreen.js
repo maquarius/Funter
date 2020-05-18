@@ -14,6 +14,11 @@ export default function HomeScreen(props) {
           onPress={() => navigate("Settings")}
           title="Settings"
         />
+        <Button
+          style={styles.button}
+          onPress={() => navigate("LogIn")}
+          title="Log in"
+        />
 
         <Button
           onPress={() => navigate("PlayingHistory")}

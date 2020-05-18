@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text, StatusBar } from "react-native";
 import MapView, { Marker } from "react-native-maps";
+
 export default function HistoryEventMapScreen() {
   return (
     <View style={{ flex: 1 }}>
