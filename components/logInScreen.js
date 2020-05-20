@@ -11,6 +11,7 @@ import {
 import * as SQLite from "expo-sqlite";
 
 export default function LogInSceen(props) {
+  const navigationOptions = { title: "LogIn" };
   const { navigate } = props.navigation;
 
   const [userName, setUserName] = useState("");
@@ -74,9 +75,13 @@ export default function LogInSceen(props) {
       },
       (err) =>
         console.log(
-          "something went wrong with adding the user" + JSON.stringify(err)
+          "something went wrong with adding the user. Error: " +
+            JSON.stringify(err)
         ),
-      updateList()
+      (updateList(),
+      Alert.alert(
+        "Accoutn created. username: " + userName + " and password: " + password
+      ))
     );
   };
 
@@ -95,7 +100,7 @@ export default function LogInSceen(props) {
     });
 
     if (password == passwordReturn) {
-      navigate("Home");
+      navigate("Home", { user: userName });
     } else {
       Alert.alert(password + " is not the same as " + passwordReturn);
     }
@@ -122,30 +127,48 @@ export default function LogInSceen(props) {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View>
-            <Text style={{ fontSize: 18 }}>
-              {item.user_name},{item.password}
-            </Text>
-          </View>
-        )}
-        data={users}
-      />
-      <TextInput
-        style={{ width: 200, borderColor: "gray", borderWidth: 1 }}
-        onChangeText={(text) => setUserName(text)}
-        value={userName}
-      />
-      <TextInput
-        style={{ width: 200, borderColor: "gray", borderWidth: 1 }}
-        onChangeText={(text) => setPassword(text)}
-        value={password}
-      />
-      <Button onPress={() => logIn()} title="Log in" />
-
-      <Button onPress={() => register()} title="Register" />
+      <View style={{ flex: 2, justifyContent: "center" }}>
+        <Text style={styles.headLine}> Funter</Text>
+        <Text style={styles.underText}>
+          {" "}
+          The sustainable nature scavenger hunter app
+        </Text>
+      </View>
+      <View style={{ flex: 1 }}>
+        <Text style={{ marginLeft: 5 }}>User name</Text>
+        <TextInput
+          style={styles.textInput}
+          onChangeText={(text) => setUserName(text)}
+          value={userName}
+          placeholder="User name"
+        />
+        <Text style={{ marginLeft: 5 }}>Password</Text>
+        <TextInput
+          style={styles.textInput}
+          onChangeText={(text) => setPassword(text)}
+          value={password}
+          placeholder="Password"
+        />
+      </View>
+      <View
+        style={{
+          flex: 2,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "flex-start",
+        }}
+      >
+        <Button style={styles.button} onPress={() => logIn()} title="Log in" />
+        <Text style={{ textAlign: "center", marginLeft: 10, marginRight: 10 }}>
+          {" "}
+          OR
+        </Text>
+        <Button
+          style={styles.button}
+          onPress={() => register()}
+          title="Register"
+        />
+      </View>
     </View>
   );
 }
@@ -157,4 +180,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  textInput: {
+    width: 200,
+    borderColor: "gray",
+    borderWidth: 1,
+    height: 30,
+    margin: 5,
+  },
+  headLine: {
+    fontSize: 50,
+    textAlign: "center",
+  },
+  underText: {
+    textAlign: "center",
+  },
+  button: {},
 });

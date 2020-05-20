@@ -19,13 +19,13 @@ import PictureScreen from "./components/PictureScreen";
 import LogInScreen from "./components/logInScreen";
 
 const AppNavigator = createStackNavigator({
+  LogIn: { screen: LogInScreen },
   Home: { screen: HomeScreen },
   Settings: { screen: SettingScreen },
   Map: { screen: HistoryEventMapScreen },
   PlayingHistory: { screen: PlayingHistoryScreen },
   Solo: { screen: SoloScreen },
   Picture: { screen: PictureScreen },
-  LogIn: { screen: LogInScreen },
 });
 
 const AppContainer = createAppContainer(AppNavigator);

@@ -2,22 +2,25 @@ import React from "react";
 import { View, Text, StatusBar, Button, StyleSheet } from "react-native";
 
 export default function HomeScreen(props) {
-  const navigationOptions = { title: "Home" };
   const { navigate } = props.navigation;
+  const { params } = props.navigation.state;
 
   return (
     <View style={styles.container}>
       <StatusBar hidden={true} />
+      <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+        <Text> Welcome {params.user} </Text>
+        <Button
+          style={styles.button}
+          onPress={() => navigate("LogIn")}
+          title="Log out"
+        />
+      </View>
       <View style={styles.buttonRow}>
         <Button
           style={styles.button}
           onPress={() => navigate("Settings")}
           title="Settings"
-        />
-        <Button
-          style={styles.button}
-          onPress={() => navigate("LogIn")}
-          title="Log in"
         />
 
         <Button

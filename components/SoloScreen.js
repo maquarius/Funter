@@ -18,26 +18,36 @@ import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("funtsdb.db");
 
 export default function SoloScreen() {
-  const [eventData, setEventData] = useState([
-    {
-      name: "squirel",
-      points: 10,
-      collected: false,
-      location: { latitude: 0, longitude: 0 },
-    },
-    {
-      name: "tree",
-      points: 1,
-      collected: false,
-      location: { latitude: 0, longitude: 0 },
-    },
-    {
-      name: "bear",
-      points: 1000,
-      collected: false,
-      location: { latitude: 0, longitude: 0 },
-    },
-  ]);
+  const [eventData, setEventData] = useState({
+    startingTime: "",
+    endingTime: "",
+    startingLocation: 0,
+    endingLocation: "",
+    user: "",
+    items: [
+      {
+        name: "squirel",
+        itemId: 0,
+        points: 10,
+        collected: false,
+        location: { latitude: 0, longitude: 0 },
+      },
+      {
+        name: "tree",
+        points: 1,
+        itemId: 1,
+        collected: false,
+        location: { latitude: 0, longitude: 0 },
+      },
+      {
+        name: "bear",
+        points: 1000,
+        itemId: 2,
+        collected: false,
+        location: { latitude: 0, longitude: 0 },
+      },
+    ],
+  });
 
   const [huntObjects, setHuntObjects] = [];
 
