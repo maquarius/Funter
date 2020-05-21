@@ -24,7 +24,7 @@ export default function HomeScreen(props) {
         />
 
         <Button
-          onPress={() => navigate("PlayingHistory")}
+          onPress={() => navigate("PlayingHistory", { user: params.user })}
           title="Playing History"
         />
       </View>

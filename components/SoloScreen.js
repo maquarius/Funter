@@ -53,6 +53,8 @@ export default function SoloScreen(props) {
     ],
   });
 
+  const [markers, setMarkers] = useState([]);
+
   const [huntObjects, setHuntObjects] = useState([]);
 
   const [totalPoints, setTotalPoints] = useState(0);
@@ -202,7 +204,20 @@ export default function SoloScreen(props) {
             latitudeDelta: 0.0322,
             longitudeDelta: 0.0221,
           }}
-        />
+        >
+          {/*
+          {markers.map((item) => (
+            <Marker
+              coordinate={{
+                latitude: item.location.latitude,
+                longitude: item.location.longitude,
+              }}
+              title={item.name}
+              description={item.points}
+            />
+          ))}
+            */}
+        </MapView>
       </View>
 
       <View style={{ flex: 3, textAlign: "center" }}>
@@ -241,6 +256,7 @@ export default function SoloScreen(props) {
                         itemId: index,
                         setUri: setEventData,
                         data: eventData,
+                        addMarker: setMarkers,
                       })
                     }
                     title="take picture"
@@ -268,7 +284,7 @@ export default function SoloScreen(props) {
                     navigate("Picture", {
                       data: eventData,
                       itemId: index,
-                      uriFunction: setEventData,
+                      uriFunction: setEventData.bind(this),
                     })
                   }
                   title="take picture"

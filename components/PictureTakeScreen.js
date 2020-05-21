@@ -13,11 +13,12 @@ import MapView, { Marker } from "react-native-maps";
 
 export default function PictureTakenScreen(props) {
   const { navigate } = props.navigation;
+  const { params } = props.navigation.state;
   var { width, height } = Dimensions.get("window");
 
   return (
     <View style={{ flex: 1 }}>
-      <Image style={{ flex: 1 }} source={props.uri} />
+      <Image style={{ flex: 1 }} source={params.uri} />
     </View>
   );
 }

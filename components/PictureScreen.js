@@ -17,12 +17,17 @@ import { Camera } from "expo-camera";
 import { max } from "react-native-reanimated";
 
 export default function PictureScreen(props) {
+  const { params } = props.navigation.state;
+  const { navigate } = props.navigation;
+
   const [hasCameraPermission, setPermission] = useState(null);
   const [photoBase64, setPhotoBase64] = useState("");
   const [visible, setVisible] = useState(false);
-  const [location, setLocation] = useState(null);
+  const [location, setLocation] = useState({
+    coords: { latitude: 0, longitude: 0 },
+  });
+
   const camera = useRef(null);
-  const { navigate } = props.navigation;
   var { width, height } = Dimensions.get("window");
 
   useEffect(() => {
@@ -59,16 +64,24 @@ export default function PictureScreen(props) {
     // Setting the uri to the right uri system doesn´t seem to work.
     // the eventData isn't recognice in the props.data format
 
-    /* getLocation();
-    let newObject = Object.assign({}, props.data);
-    const indexCopy = props.itemId;
+    getLocation();
+    let newObject = Object.assign({}, params.data);
+    const indexCopy = params.itemId;
     newObject.items[indexCopy].uri = `data:image/gif;base64,${photoBase64}`;
     newObject.items[indexCopy].location.latitude = location.coords.latitude;
     newObject.items[indexCopy].location.longitude = location.coords.longitude;
     newObject.items[indexCopy].collected = true;
 
-    props.uriFunction(newObject);
-    */
+    params.setUri(newObject);
+    const emptyCoordination = {
+      location: {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      },
+    };
+
+    //params.addMarker(emptyCoordination);
+
     navigate("Solo");
   };
 
