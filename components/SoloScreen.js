@@ -17,7 +17,8 @@ import * as SQLite from "expo-sqlite";
 
 const db = SQLite.openDatabase("funtsdb.db");
 
-export default function SoloScreen() {
+export default function SoloScreen(props) {
+  const { navigate } = props.navigation;
   const [eventData, setEventData] = useState({
     startingTime: "",
     endingTime: "",
@@ -31,6 +32,7 @@ export default function SoloScreen() {
         points: 10,
         collected: false,
         location: { latitude: 0, longitude: 0 },
+        uri: "",
       },
       {
         name: "tree",
@@ -38,6 +40,7 @@ export default function SoloScreen() {
         itemId: 1,
         collected: false,
         location: { latitude: 0, longitude: 0 },
+        uri: "",
       },
       {
         name: "bear",
@@ -45,11 +48,12 @@ export default function SoloScreen() {
         itemId: 2,
         collected: false,
         location: { latitude: 0, longitude: 0 },
+        uri: "",
       },
     ],
   });
 
-  const [huntObjects, setHuntObjects] = [];
+  const [huntObjects, setHuntObjects] = useState([]);
 
   const [totalPoints, setTotalPoints] = useState(0);
 
@@ -105,9 +109,9 @@ export default function SoloScreen() {
 
   const getTotalPoints = () => {
     let total = 0;
-    for (let i = 0; i < eventData.length; i++) {
-      if (eventData[i].collected) {
-        total += eventData[i].points;
+    for (let i = 0; i < eventData.items.length; i++) {
+      if (eventData.items[i].collected) {
+        total += eventData.items[i].points;
       }
     }
     setTotalPoints(total);
@@ -115,8 +119,42 @@ export default function SoloScreen() {
 
   const changeCollect = (item, key) => {
     let newArr = [...eventData];
-    newArr[key].collected = true;
+    newArr.items[key].collected = true;
     setEventData(newArr);
+  };
+
+  const ListSeperator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: "100%",
+          backgroundColor: "#000",
+          opacity: 0.4,
+        }}
+      />
+    );
+  };
+
+  const FlatListHeader = () => {
+    return (
+      <View>
+        <View style={{ flexDirection: "row", margin: 10 }}>
+          <Text style={{ flex: 1, fontSize: 20 }}>Item</Text>
+          <Text style={{ flex: 1, marginLeft: 40, fontSize: 20 }}>Points</Text>
+          <Text style={{ flex: 1 }}></Text>
+          <Text style={{ flex: 1 }}></Text>
+        </View>
+        <View
+          style={{
+            height: 1,
+            width: "100%",
+            backgroundColor: "#000",
+            opacity: 0.4,
+          }}
+        />
+      </View>
+    );
   };
 
   return (
@@ -132,14 +170,14 @@ export default function SoloScreen() {
         style={{
           flex: 1,
           flexDirection: "row",
-          backgroundColor: "red",
+          alignItems: "stretch",
+          justifyContent: "space-between",
         }}
       >
         <Text
           style={{
             flex: 1,
-            backgroundColor: "green",
-
+            textAlignVertical: "center",
             textAlign: "center",
           }}
         >
@@ -148,10 +186,8 @@ export default function SoloScreen() {
         <Text
           style={{
             flex: 1,
-            backgroundColor: "blue",
-            justifyContent: "center",
-
             textAlign: "center",
+            textAlignVertical: "center",
           }}
         >
           Time:
@@ -169,31 +205,85 @@ export default function SoloScreen() {
         />
       </View>
 
-      <View style={{ flex: 3, textAlign: "center", backgroundColor: "grey" }}>
-        <Text>Targets</Text>
+      <View style={{ flex: 3, textAlign: "center" }}>
+        <Text style={{ textAlign: "center", fontSize: 25, margin: 5 }}>
+          Targets
+        </Text>
         <FlatList
-          data={eventData}
-          renderItem={({ item, index }) => (
-            <View
-              style={{ flexDirection: "row", justifyContent: "space-around" }}
-            >
-              <Text style={styles.text}>{item.name}</Text>
-              <Text>{item.points}</Text>
+          data={eventData.items}
+          ListHeaderComponent={FlatListHeader}
+          ItemSeparatorComponent={ListSeperator}
+          renderItem={({ item, index }) => {
+            if (item.uri == "") {
+              return (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    margin: 10,
+                  }}
+                >
+                  <Text style={styles.text}>{item.name}</Text>
+                  <Text style={styles.points}>{item.points}</Text>
 
-              <Button
-                onPress={() => changeCollect(item, index)}
-                title="take picture"
-              />
-            </View>
-          )}
+                  <Button
+                    onPress={() =>
+                      Alert.alert(
+                        "Picture of " + item.name + " is not taken yet"
+                      )
+                    }
+                    title="Not done"
+                  />
+
+                  <Button
+                    onPress={() =>
+                      navigate("Picture", {
+                        itemId: index,
+                        setUri: setEventData,
+                        data: eventData,
+                      })
+                    }
+                    title="take picture"
+                  />
+                </View>
+              );
+            } else {
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  margin: 10,
+                }}
+              >
+                <Text style={styles.text}>{item.name}</Text>
+                <Text style={styles.points}>{item.points}</Text>
+
+                <Button
+                  onPress={() => navigate("ShowPicture", { uri: item.uri })}
+                  title="Done"
+                />
+
+                <Button
+                  onPress={() =>
+                    navigate("Picture", {
+                      data: eventData,
+                      itemId: index,
+                      uriFunction: setEventData,
+                    })
+                  }
+                  title="take picture"
+                />
+              </View>;
+            }
+          }}
+          keyExtractor={(item, index) => index.toString()}
         ></FlatList>
       </View>
     </View>
   );
 }
 const styles = StyleSheet.create({
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  },
+  map: {},
   text: {},
+  points: { textAlign: "center" },
 });

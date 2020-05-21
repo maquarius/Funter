@@ -17,6 +17,7 @@ import PlayingHistoryScreen from "./components/PlayingHistoryScreen";
 import SoloScreen from "./components/SoloScreen";
 import PictureScreen from "./components/PictureScreen";
 import LogInScreen from "./components/logInScreen";
+import PictureTakenScreen from "./components/PictureTakeScreen";
 
 const AppNavigator = createStackNavigator({
   LogIn: { screen: LogInScreen },
@@ -26,6 +27,7 @@ const AppNavigator = createStackNavigator({
   PlayingHistory: { screen: PlayingHistoryScreen },
   Solo: { screen: SoloScreen },
   Picture: { screen: PictureScreen },
+  ShowPicture: { screen: PictureTakenScreen },
 });
 
 const AppContainer = createAppContainer(AppNavigator);
